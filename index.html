@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Impressa Entertainment, Inc. — 東京のゲーム開発スタジオ。ローグライクを中心にSteam向けタイトルを開発。">
+<title>Impressa Entertainment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-bleed hero on the studio's key visual, then a narrow 1100px column of sections
+   separated by thin cyan rules. The logo's navy→sky gradient is the only accent device. */
+:root{
+  --bg:#ffffff;
+  --bg-2:#f3f8fb;
+  --fg:#111b33;
+  --fg-2:#4a5878;
+  --line:#d6e4ee;
+  --navy:#1c2a5a;
+  --sky:#3f8ad0;
+  --cyan:#17d2e6;
+  --grad:linear-gradient(90deg,#1c2a5a 0%,#2f5aa0 45%,#4c9bdc 100%);
+  --card:#ffffff;
+  --display:"Michroma","Orbitron","Segoe UI",sans-serif;
+  --body:"Noto Sans JP","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1326;--bg-2:#111c35;--fg:#e9f1f8;--fg-2:#9fb0c8;--line:#24335a;
+    --navy:#dbe7f5;--sky:#78b9f0;--cyan:#2fe3f5;
+    --grad:linear-gradient(90deg,#8ec4f5 0%,#5fd9ec 60%,#2fe3f5 100%);
+    --card:#111c35;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1326;--bg-2:#111c35;--fg:#e9f1f8;--fg-2:#9fb0c8;--line:#24335a;
+  --navy:#dbe7f5;--sky:#78b9f0;--cyan:#2fe3f5;
+  --grad:linear-gradient(90deg,#8ec4f5 0%,#5fd9ec 60%,#2fe3f5 100%);
+  --card:#111c35;color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+h1,h2,h3{text-wrap:balance;margin:0}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:20px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+.top img{height:22px;width:auto;display:block}
+.top nav{display:flex;gap:22px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.top nav a{text-decoration:none;color:var(--fg-2)}
+.top nav a:hover,.top nav a:focus-visible{color:var(--sky)}
+@media (max-width:640px){.top nav{display:none}}
+:root[data-theme="dark"] .top img,.hero img{filter:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .top img{filter:brightness(0) invert(1)}}
+:root[data-theme="dark"] .top img{filter:brightness(0) invert(1)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:#dff8fc;color:#111b33;min-height:min(70vh,560px);display:grid;place-items:center;text-align:center}
+.hero .kv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .inner{position:relative;padding:72px 20px 64px;display:grid;gap:22px;justify-items:center}
+.hero .logo{width:min(640px,86vw);height:auto;filter:drop-shadow(0 6px 24px rgba(255,255,255,.9))}
+.hero .tag{font-family:var(--display);font-size:clamp(13px,2.4vw,18px);letter-spacing:.18em;text-transform:uppercase;color:#1c2a5a;text-shadow:0 0 18px #fff,0 0 36px #fff}
+.hero p{max-width:40ch;margin:0;font-size:15px;color:#243457;text-shadow:0 0 12px #fff,0 0 24px #fff}
+.hero .cta{display:inline-flex;gap:10px;align-items:center;padding:12px 24px;border-radius:999px;background:#1c2a5a;color:#fff;text-decoration:none;font-family:var(--mono);font-size:13px;letter-spacing:.1em;box-shadow:0 8px 24px rgba(28,42,90,.3)}
+.hero .cta:hover{background:#2f5aa0}
+
+/* sections */
+section{padding-block:72px;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--sky);margin-bottom:14px}
+h2{font-family:var(--display);font-size:clamp(22px,3.6vw,34px);line-height:1.3;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block;margin-bottom:24px}
+.lead{font-size:clamp(17px,2.2vw,21px);font-weight:500;line-height:1.9;max-width:34em}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+@media (max-width:760px){.cols{grid-template-columns:1fr}}
+.cols p{color:var(--fg-2);margin:0 0 1em}
+
+/* services */
+.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:820px){.svc{grid-template-columns:1fr}}
+.svc article{border-top:3px solid;border-image:var(--grad) 1;padding:22px 0 0;min-width:0}
+.svc h3{font-family:var(--display);font-size:15px;letter-spacing:.04em;line-height:1.5;margin-bottom:10px;color:var(--navy)}
+.svc p{margin:0;color:var(--fg-2);font-size:15px}
+
+/* works */
+.works{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+@media (max-width:760px){.works{grid-template-columns:1fr}}
+.work{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:22px 24px;display:grid;gap:10px;min-width:0}
+.work .meta{display:flex;justify-content:space-between;gap:12px;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-2)}
+.pill{padding:3px 10px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.pill.live{background:var(--cyan);border-color:transparent;color:#0b1326}
+.work h3{font-family:var(--display);font-size:17px;line-height:1.5;color:var(--navy)}
+.work p{margin:0;color:var(--fg-2);font-size:15px}
+.work a{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--sky)}
+.work.featured{grid-column:1/-1;background:linear-gradient(135deg,var(--bg-2),var(--card))}
+
+/* company */
+dl{display:grid;grid-template-columns:max-content 1fr;gap:14px 32px;margin:0;font-size:15px}
+@media (max-width:520px){dl{grid-template-columns:1fr;gap:4px}dd{margin-bottom:14px}}
+dt{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-2);padding-top:3px}
+dd{margin:0}
+.note{font-size:13px;color:var(--fg-2);margin-top:28px}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+@media (max-width:760px){.contact{grid-template-columns:1fr}}
+.addr{font-family:var(--mono);font-size:14px;line-height:1.9;padding:18px 20px;border-left:3px solid;border-image:var(--grad) 1;background:var(--bg-2);white-space:pre-line}
+
+footer{padding:36px 0 44px;color:var(--fg-2);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer img{height:16px;width:auto}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) footer img{filter:brightness(0) invert(1)}}
+:root[data-theme="dark"] footer img{filter:brightness(0) invert(1)}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){
+  .hero .inner>*{animation:rise .8s ease both}
+  .hero .inner>*:nth-child(2){animation-delay:.12s}.hero .inner>*:nth-child(3){animation-delay:.24s}.hero .inner>*:nth-child(4){animation-delay:.36s}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+}
+img{max-width:100%}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#top" aria-label="Impressa Entertainment"><img src="logo.png" alt="Impressa Entertainment"></a>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#works">Works</a>
+      <a href="#company">Company</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero" id="top">
+  <img class="kv" src="hero.jpg" alt="">
+  <div class="inner">
+    <img class="logo" src="logo.png" alt="Impressa Entertainment">
+    <div class="tag">Game Development Studio · Tokyo</div>
+    <p>ローグライクを中心に、小さなチームで速く作り、Steam で世界に届ける東京のゲーム開発スタジオです。</p>
+    <a class="cta" href="#works">WORKS →</a>
+  </div>
+</div>
+
+<section id="about">
+  <div class="wrap">
+    <div class="eyebrow">About</div>
+    <h2>Impress the player.</h2>
+    <div class="cols">
+      <p class="lead">一度遊んだら忘れない「手触り」を、少人数のチームで作る。それが Impressa Entertainment の仕事です。</p>
+      <div>
+        <p>社名の Impressa は「印象づける」を意味します。大作ではなく、1つのアイデアを尖らせたゲームを短いサイクルで作り、Steam を通じて世界中のプレイヤーに届けています。</p>
+        <p>企画・プログラム・アート・動画制作までを社内で完結させることで、試作から配信までの距離を極端に短くしています。Unreal Engine を軸に、PC（Steam）向けのタイトルを開発中です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="eyebrow">Services</div>
+    <h2>What we do</h2>
+    <div class="svc">
+      <article>
+        <h3>GAME DEVELOPMENT</h3>
+        <p>自社タイトルの企画・開発・運営。ローグライクを中心に、PC（Steam）向けのオリジナルゲームを制作しています。Unreal Engine を使用。</p>
+      </article>
+      <article>
+        <h3>PUBLISHING ON STEAM</h3>
+        <p>ストアページ制作、ローカライズ、リリース計画まで、Steam での配信に必要な工程を一貫して行います。</p>
+      </article>
+      <article>
+        <h3>VIDEO &amp; CONTENT</h3>
+        <p>ゲームのトレーラー制作、YouTube / TikTok 向けの動画制作。Minecraft の Mod 開発など、プレイヤーコミュニティ向けのコンテンツ制作も行います。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="works">
+  <div class="wrap">
+    <div class="eyebrow">Works</div>
+    <h2>Titles</h2>
+    <div class="works">
+      <article class="work featured">
+        <div class="meta"><span>Steam · PC</span><span class="pill live">Released</span></div>
+        <h3>AI Fight Club</h3>
+        <p>Impressa Entertainment の第1作。Steam にて配信中。</p>
+        <a href="https://store.steampowered.com/search/?term=AI+Fight+Club" target="_blank" rel="noopener">Steam で見る →</a>
+      </article>
+      <article class="work">
+        <div class="meta"><span>Roguelike · PC</span><span class="pill">In development</span></div>
+        <h3>No One Came Back</h3>
+        <p>魔王側になってダンジョンを築き、侵入してくる勇者たちを迎え撃つ「逆ローグライク」。</p>
+      </article>
+      <article class="work">
+        <div class="meta"><span>Roguelike · PC</span><span class="pill">In development</span></div>
+        <h3>KOTOMANCER</h3>
+        <p>隠された文字を集め、単語を組んで魔法にする「言語ローグライク」。四字熟語が最強の技になる。</p>
+      </article>
+      <article class="work">
+        <div class="meta"><span>Roguelike · PC</span><span class="pill">In development</span></div>
+        <h3>Bones Below</h3>
+        <p>化石を掘り、復元した恐竜を仲間にして戦う発掘ローグライク。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="company">
+  <div class="wrap">
+    <div class="eyebrow">Company</div>
+    <h2>Company Profile</h2>
+    <dl>
+      <dt>Name</dt><dd>Impressa Entertainment, Inc.（株式会社インプレッサエンターテインメント）</dd>
+      <dt>Address</dt><dd>〒153-0051 東京都目黒区上目黒3-1-10 ヴェルデナポリ203</dd>
+      <dt>Email</dt><dd>impressa.entertainment@gmail.com</dd>
+      <dt>Business</dt><dd>ゲームの企画・開発・配信、動画・デジタルコンテンツの制作</dd>
+      <dt>Platform</dt><dd>Steam（PC）</dd>
+      <dt>Engine</dt><dd>Unreal Engine</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Contact</div>
+    <h2>Get in touch</h2>
+    <div class="contact">
+      <div>
+        <p style="margin:0 0 1em;color:var(--fg-2)">パブリッシング、協業、取材、採用に関するお問い合わせは下記までお願いします。</p>
+        <p style="margin:0;font-family:var(--mono);font-size:16px;letter-spacing:.02em;word-break:break-all"><a href="mailto:impressa.entertainment@gmail.com" style="color:var(--sky);text-decoration:none">impressa.entertainment@gmail.com</a></p>
+      </div>
+      <div>
+        <div class="addr" id="addr">Impressa Entertainment, Inc.
+〒153-0051
+東京都目黒区上目黒3-1-10
+ヴェルデナポリ203</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="logo.png" alt="Impressa Entertainment">
+    <span>© 2026 Impressa Entertainment, Inc.</span>
+  </div>
+</footer>
+
+
+</body>
+</html>
