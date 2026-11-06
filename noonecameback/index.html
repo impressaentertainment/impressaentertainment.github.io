@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>No One Came Back</title>
+<meta name="description" content="勇者を倒す側になる、逆ローグライク。街にうわさを流して獲物を選び、洞窟に手下と罠を並べて迎え撃て。Steam・Google Play で早期アクセス配信中。">
+<meta property="og:title" content="No One Came Back">
+<meta property="og:description" content="勇者を倒す側になる、逆ローグライク。だれも、帰すな。">
+<meta property="og:image" content="https://impressaentertainment.github.io/noonecameback/media/header.jpg">
+<link rel="icon" href="media/icon.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+/* Layout: one dark cave. A key-art hero over a blurred battle, the trailer as the centrepiece,
+   then the real game loop as four numbered steps, a screenshot wall, and the store links.
+   Single dark theme on purpose: the game is a night-time dungeon. */
+:root{
+  --bg:#0e0a14;
+  --bg-2:#171021;
+  --panel:#1d1529;
+  --line:#2f2440;
+  --fg:#efe8f7;
+  --fg-2:#b2a6c4;
+  --blood:#d6334a;
+  --gold:#e7b75a;
+  --violet:#8d5cf0;
+  --pixel:"DotGothic16","Noto Sans JP",monospace;
+  --body:"Noto Sans JP","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+h1,h2,h3{text-wrap:balance;margin:0;font-weight:400}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:20px}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;padding-top:env(safe-area-inset-top,0px);background:rgba(14,10,20,.86);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center;height:54px;gap:16px}
+.bar a.home{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:12px;letter-spacing:.12em;color:var(--fg-2)}
+.bar a.home img{height:16px;width:auto;filter:brightness(0) invert(1);opacity:.85}
+.bar nav{display:flex;gap:20px;font-family:var(--pixel);font-size:14px}
+.bar nav a{text-decoration:none;color:var(--fg-2)}
+.bar nav a:hover{color:var(--gold)}
+@media (max-width:640px){.bar nav{display:none}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:#120c1c}
+.hero .art{position:relative;width:100%;height:clamp(220px,32.3vw,620px);overflow:hidden}
+.hero .art img.bgimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 100%;image-rendering:pixelated;max-width:none}
+.hero .art::after{content:"";position:absolute;inset:auto 0 0 0;height:30%;background:linear-gradient(transparent,#120c1c)}
+.hero .logo{position:absolute;left:50%;top:6%;transform:translateX(-50%);width:min(440px,52%);image-rendering:pixelated;filter:drop-shadow(0 6px 0 #000) drop-shadow(0 0 24px rgba(141,92,240,.45));z-index:1}
+.hero .inner{position:relative;z-index:1;display:grid;justify-items:center;text-align:center;gap:20px;padding-block:8px 56px}
+@media (max-width:640px){.hero .logo{width:72%;top:6%}}
+.tagline{font-family:var(--pixel);font-size:clamp(26px,5vw,44px);letter-spacing:.12em;color:var(--blood);text-shadow:0 0 18px rgba(214,51,74,.55)}
+.lead{max-width:36em;margin:0;color:var(--fg)}
+.badges{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;font-family:var(--pixel);font-size:13px}
+.badges span{padding:3px 12px;border:1px solid var(--line);background:rgba(23,16,33,.8);color:var(--fg-2)}
+.badges .now{border-color:var(--gold);color:var(--gold)}
+.ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;font-family:var(--pixel);font-size:16px;text-decoration:none;border:2px solid #000;box-shadow:4px 4px 0 #000;transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #000}
+.btn svg{width:20px;height:20px;flex:none}
+.btn.steam{background:var(--gold);color:#1a1020}
+.btn.play{background:var(--panel);color:var(--fg);border-color:var(--line)}
+
+/* sections */
+section{padding-block:72px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--pixel);font-size:14px;letter-spacing:.2em;color:var(--violet);margin-bottom:10px}
+h2{font-family:var(--pixel);font-size:clamp(24px,3.6vw,34px);letter-spacing:.06em;margin-bottom:28px}
+p{margin:0}
+
+/* trailer */
+.trailer{position:relative;aspect-ratio:16/9;max-width:100%;background:#000;border:2px solid var(--line);box-shadow:0 0 0 4px #000}
+.trailer video{width:100%;height:100%;display:block;background:#000}
+.trailer .play-btn{position:absolute;inset:0;display:grid;place-items:center;background:transparent;border:0;cursor:pointer;color:#fff}
+.trailer .play-btn span{display:grid;place-items:center;width:84px;height:84px;background:var(--blood);border:3px solid #000;box-shadow:5px 5px 0 #000;font-size:30px}
+.trailer .play-btn:hover span{background:#e64a60}
+.note{margin-top:10px;font-size:13px;color:var(--fg-2)}
+
+/* loop */
+.loop{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+@media (max-width:900px){.loop{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.loop{grid-template-columns:1fr}}
+.step{background:var(--panel);border:1px solid var(--line);display:grid;grid-template-rows:auto 1fr;min-width:0}
+.step button{padding:0;border:0;background:#000;cursor:zoom-in;display:block;width:100%}
+.step img{aspect-ratio:16/9;object-fit:cover;width:100%}
+.step .txt{padding:16px 18px 20px;display:grid;gap:8px;align-content:start}
+.step .n{font-family:var(--pixel);font-size:13px;color:var(--gold);letter-spacing:.1em}
+.step h3{font-family:var(--pixel);font-size:19px;line-height:1.4}
+.step p{font-size:14px;color:var(--fg-2);line-height:1.75}
+.rumor{margin-bottom:26px;display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:20px;align-items:center;padding:14px;border-left:3px solid var(--blood);background:var(--bg-2)}
+.rumor img{width:100%;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--line)}
+@media (max-width:640px){.rumor{grid-template-columns:1fr}}
+.rumor b{font-family:var(--pixel);font-weight:400;color:var(--gold)}
+
+/* numbers */
+.nums{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:36px}
+@media (max-width:760px){.nums{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.nums div{background:var(--bg-2);padding:16px 10px;text-align:center}
+.nums b{display:block;font-family:var(--pixel);font-weight:400;font-size:30px;color:var(--fg);font-variant-numeric:tabular-nums;line-height:1.2}
+.nums span{font-size:12px;color:var(--fg-2)}
+.modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:760px){.modes{grid-template-columns:1fr}}
+.mode{border-top:3px solid var(--violet);padding-top:14px;min-width:0}
+.mode h3{font-family:var(--pixel);font-size:18px;margin-bottom:6px}
+.mode p{font-size:14px;color:var(--fg-2)}
+.extra{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:760px){.extra{grid-template-columns:1fr}}
+.extra div{background:var(--panel);border:1px solid var(--line);padding:16px 18px;min-width:0}
+.extra h3{font-family:var(--pixel);font-size:17px;margin-bottom:4px;color:var(--gold)}
+.extra p{font-size:14px;color:var(--fg-2)}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.gallery button{padding:0;border:1px solid var(--line);background:#000;cursor:zoom-in;display:block;min-width:0;width:100%}
+.gallery img{aspect-ratio:16/9;object-fit:cover;width:100%;transition:opacity .15s}
+.gallery button:hover img{opacity:.8}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(5,3,8,.94);display:grid;place-items:center;padding:20px}
+.lightbox img{max-height:86vh;width:auto;height:auto;max-width:100%;border:2px solid var(--line)}
+.lightbox .close,.lightbox .nav{position:absolute;background:var(--panel);color:var(--fg);border:1px solid var(--line);font-family:var(--pixel);font-size:20px;width:46px;height:46px;cursor:pointer}
+.lightbox .close{top:calc(14px + env(safe-area-inset-top,0px));right:14px}
+.lightbox .prev{left:14px;top:50%;transform:translateY(-50%)}
+.lightbox .next{right:14px;top:50%;transform:translateY(-50%)}
+
+/* buy */
+.buy{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:start}
+@media (max-width:860px){.buy{grid-template-columns:1fr}}
+.widget{width:100%;max-width:646px;height:190px;border:0;display:block}
+.stores{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:10px 22px;margin:0;font-size:14px}
+dt{font-family:var(--pixel);color:var(--fg-2)}
+dd{margin:0;min-width:0}
+.ea{margin-top:22px;padding:14px 16px;border:1px dashed var(--line);font-size:13px;color:var(--fg-2)}
+
+footer{padding-block:36px 48px;font-size:13px;color:var(--fg-2)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;align-items:center}
+footer nav{display:flex;flex-wrap:wrap;gap:18px}
+footer a{color:var(--fg-2)}
+footer a:hover{color:var(--gold)}
+
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="home" href="../"><img src="../logo.png" alt="Impressa Entertainment"></a>
+    <nav>
+      <a href="#trailer">トレーラー</a>
+      <a href="#loop">遊び方</a>
+      <a href="#screens">スクリーンショット</a>
+      <a href="#buy">購入</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="art">
+    <img class="bgimg" src="media/hero.jpg" alt="魔王と手下たち、そして勇者の一行が夜の村の前に並ぶキービジュアル" width="1920" height="620">
+    <img class="logo" src="media/logo.png" alt="No One Came Back" width="640" height="286">
+  </div>
+  <div class="wrap inner">
+    <h1 class="tagline">だれも、帰すな。</h1>
+    <p class="lead">勇者を倒す側になる、逆ローグライク。街にうわさを流して獲物を選び、洞窟に手下と罠を並べて迎え撃て。魔王の間までたどり着いた者は、魔王であるあなたが自分の手で倒す。</p>
+    <div class="badges"><span class="now">早期アクセス配信中</span><span>Windows（Steam）</span><span>Android（Google Play）</span><span>10言語対応</span></div>
+    <div class="ctas">
+      <a class="btn steam" href="https://store.steampowered.com/app/5404030/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-9.96 9.1l5.36 2.22a2.8 2.8 0 0 1 1.6-.5h.15l2.39-3.46v-.05a3.79 3.79 0 1 1 3.79 3.79h-.09l-3.4 2.43v.13a2.85 2.85 0 0 1-5.65.53L2.4 14.6A10 10 0 1 0 12 2Zm-4.3 15.2-1.23-.5a2.13 2.13 0 1 0 1.17-2.92l1.27.53a1.57 1.57 0 1 1-1.2 2.9Zm9.53-7.6a2.53 2.53 0 1 0-2.53 2.53 2.53 2.53 0 0 0 2.53-2.53Zm-4.42 0a1.9 1.9 0 1 1 1.9 1.9 1.9 1.9 0 0 1-1.9-1.9Z"/></svg>
+        Steam で見る
+      </a>
+      <a class="btn play" href="https://play.google.com/store/apps/details?id=com.impressa.noonecameback" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.6v18.8c0 .4.4.7.8.5l10.9-9.4L4.8 2.1c-.4-.2-.8.1-.8.5Zm13.6 7.5-2.5 2.2 2.5 2.2 3.3-1.9c.6-.3.6-1.2 0-1.5Zm-1.2-.7L6.6 3.7l8.2 7.1Zm0 5.2-1.6-1.4-8.2 7.1Z"/></svg>
+        Google Play で見る
+      </a>
+    </div>
+  </div>
+</div>
+
+<main>
+<section id="trailer">
+  <div class="wrap">
+    <div class="eyebrow">TRAILER</div>
+    <h2>ゲームプレイトレーラー</h2>
+    <div class="trailer">
+      <video id="trailerVideo" controls playsinline preload="metadata" poster="media/trailer_poster.jpg">
+        <source src="media/trailer_ja.mp4" type="video/mp4">
+      </video>
+      <button class="play-btn" id="playBtn" type="button" aria-label="トレーラーを再生"><span>▶</span></button>
+    </div>
+    <p class="note">56秒。ゲーム画面は英語、字幕は日本語です。</p>
+  </div>
+</section>
+
+<section id="loop">
+  <div class="wrap">
+    <div class="eyebrow">HOW IT PLAYS</div>
+    <h2>1回の襲撃の流れ</h2>
+    <div class="rumor"><img src="media/rumor.jpg" alt="手下たちが夜の街にうわさのビラをまいている場面" loading="lazy" width="1280" height="720"><p><b>はじまりは、うわさ。</b>「洞窟の奥に伝説の剣が眠る」と流せば勇者の一行が、「伝説のプロテインがある」と流せば筋肉自慢たちがやって来る。うわさごとに、来る相手の顔ぶれ・強さ・持ち物が見える。次の襲撃は、あなたが選ぶ。</p></div>
+    <div class="loop">
+      <article class="step">
+        <button type="button" data-shot="5" aria-label="準備の画面を拡大"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5404030/a62277fda1cb65080b4cd9dee547103e9458d8d3/ss_a62277fda1cb65080b4cd9dee547103e9458d8d3.600x338.jpg" alt="襲撃の準備画面。4つの部屋に手下を配置している" loading="lazy" width="600" height="338"></button>
+        <div class="txt"><div class="n">STEP 1</div><h3>4つの部屋に、手下を並べる</h3><p>部屋ごとの配置コストの中で、スライムからドラゴンまで33種の手下を置く。強化は種族ごと。何を伸ばすかで、軍の形が変わる。</p></div>
+      </article>
+      <article class="step">
+        <button type="button" data-shot="0" aria-label="戦いの画面を拡大"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5404030/d5e4332a220dfcc4dbc51e894038ae373d600abd/ss_d5e4332a220dfcc4dbc51e894038ae373d600abd.600x338.jpg" alt="手下と侵入者が入り乱れて戦う画面" loading="lazy" width="600" height="338"></button>
+        <div class="txt"><div class="n">STEP 2</div><h3>リアルタイムで迎え撃つ</h3><p>手下は自分で相手を選んで戦う。魔力を払えばその場で召喚。カードを選んでいるあいだは時間がゆっくりになる。</p></div>
+      </article>
+      <article class="step">
+        <button type="button" data-shot="1" aria-label="魔王の間の画面を拡大"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5404030/f5de01d7a17bdfdbb83bb8d4d943ded84369e786/ss_f5de01d7a17bdfdbb83bb8d4d943ded84369e786.600x338.jpg" alt="魔王の間。プレイヤーが魔王を動かして侵入者と戦う" loading="lazy" width="600" height="338"></button>
+        <div class="txt"><div class="n">STEP 3</div><h3>最後は、あなたが戦う</h3><p>手下を突破した者は魔王の間へ。WASD で動き、クリックで攻撃、Space でかわす。道中で削っておくほど楽になる。</p></div>
+      </article>
+      <article class="step">
+        <button type="button" data-shot="4" aria-label="血の商人の画面を拡大"><img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5404030/56149994922632ca2b62a9bf095d5eff18c5aa8e/ss_56149994922632ca2b62a9bf095d5eff18c5aa8e.600x338.jpg" alt="血の商人の店。人間の血で手下や遺物を買う" loading="lazy" width="600" height="338"></button>
+        <div class="txt"><div class="n">STEP 4</div><h3>人間の血で、強くなる</h3><p>倒れた侵入者は血を残す。襲撃の合間には血の商人、闇の鍛冶屋、占い師の悪魔などが洞窟を訪ねてくる。</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="eyebrow">CONTENT</div>
+    <h2>早期アクセス版に入っているもの</h2>
+    <div class="nums">
+      <div><b>33</b><span>手下</span></div>
+      <div><b>25</b><span>侵入者</span></div>
+      <div><b>8</b><span>魔法</span></div>
+      <div><b>6</b><span>罠</span></div>
+      <div><b>11</b><span>遺物</span></div>
+      <div><b>9</b><span>イベント</span></div>
+    </div>
+    <div class="modes">
+      <div class="mode"><h3>PLAY</h3><p>襲撃7回。クリアすると「警戒度」が1段開く。全10段、1段ごとに不利な条件がひとつ増える。</p></div>
+      <div class="mode"><h3>100モード</h3><p>襲撃100回。10回ごとに大物が率いる一団が来る。倒した大物は、以後の襲撃に加わる。</p></div>
+      <div class="mode"><h3>デイリーチャレンジ</h3><p>1日1回、全員が同じ条件。Steam のランキングで競う。</p></div>
+    </div>
+    <div class="extra">
+      <div><h3>配信者モード</h3><p>配信のチャットをつなぐと、視聴者がコメントの番号で投票できる。どのうわさを流すか、どの報酬を取るか、イベントでどうするか。</p></div>
+      <div><h3>10言語に対応</h3><p>日本語、英語、簡体字中国語、繁体字中国語、韓国語、ドイツ語、フランス語、スペイン語、ポルトガル語（ブラジル）、ロシア語。</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="screens">
+  <div class="wrap">
+    <div class="eyebrow">SCREENSHOTS</div>
+    <h2>スクリーンショット</h2>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<section id="buy">
+  <div class="wrap">
+    <div class="eyebrow">GET THE GAME</div>
+    <h2>遊ぶには</h2>
+    <div class="buy">
+      <div>
+        <iframe class="widget" src="https://store.steampowered.com/widget/5404030/" title="Steam で No One Came Back を購入" loading="lazy"></iframe>
+        <div class="stores">
+          <a class="btn steam" href="https://store.steampowered.com/app/5404030/" target="_blank" rel="noopener">Steam（Windows）</a>
+          <a class="btn play" href="https://play.google.com/store/apps/details?id=com.impressa.noonecameback" target="_blank" rel="noopener">Google Play（Android）</a>
+        </div>
+        <p class="ea">早期アクセス版です。最初から最後まで遊べますが、キャラクターの歩きや攻撃の動き、手下や侵入者の追加などは、遊んだ方の声を聞きながら進めていきます。ご意見は <a href="https://steamcommunity.com/app/5404030/discussions/" target="_blank" rel="noopener">Steam の掲示板</a>へ。</p>
+      </div>
+      <dl>
+        <dt>タイトル</dt><dd>No One Came Back</dd>
+        <dt>ジャンル</dt><dd>逆ローグライク／ストラテジー</dd>
+        <dt>配信開始</dt><dd>2026年11月6日（早期アクセス）</dd>
+        <dt>価格</dt><dd>980円（Steam・Google Play）</dd>
+        <dt>対応機種</dt><dd>Windows（Steam）、Android（Google Play）</dd>
+        <dt>プレイ人数</dt><dd>1人</dd>
+        <dt>操作</dt><dd>マウスとキーボード（スマホ版はタッチ）</dd>
+        <dt>開発・販売</dt><dd>Impressa Entertainment, Inc.</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Impressa Entertainment, Inc.</span>
+    <nav>
+      <a href="../">Impressa Entertainment</a>
+      <a href="https://x.com/ImpressaEnt" target="_blank" rel="noopener">X @ImpressaEnt</a>
+      <a href="../privacy/noonecameback.html">プライバシーポリシー</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="スクリーンショット">
+  <button class="close" type="button" id="lbClose" aria-label="閉じる">×</button>
+  <button class="nav prev" type="button" id="lbPrev" aria-label="前の画像">‹</button>
+  <img id="lbImg" alt="">
+  <button class="nav next" type="button" id="lbNext" aria-label="次の画像">›</button>
+</div>
+
+<script>
+(function(){
+  var base='https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/5404030/';
+  var shots=[
+    ['d5e4332a220dfcc4dbc51e894038ae373d600abd','手下と侵入者の大乱戦'],
+    ['f5de01d7a17bdfdbb83bb8d4d943ded84369e786','魔王の間で魔王が戦う'],
+    ['41b2c77fafb44223a757fedc948ed2cdb1e7c93c','極太ビーム'],
+    ['eb21efd9b676d18f8dffc011fd4a9f103e5367c6','報酬を1つ選ぶ'],
+    ['56149994922632ca2b62a9bf095d5eff18c5aa8e','血の商人'],
+    ['a62277fda1cb65080b4cd9dee547103e9458d8d3','襲撃の準備'],
+    ['63a9e60482761695d577b5bde8366df034e402ad','部屋での戦い'],
+    ['138832e06a1840419cfbb3d78b3ffdeb8325cdb6','魔法が飛び交う戦い'],
+    ['996d712866fd5dcfe46d7ce4c5deaaa82d8aeed8','反射するビーム']
+  ];
+  function url(id,size){return base+id+'/ss_'+id+'.'+size+'.jpg';}
+  var g=document.getElementById('gallery');
+  shots.forEach(function(s,i){
+    var b=document.createElement('button');b.type='button';b.dataset.shot=i;b.setAttribute('aria-label',s[1]+'を拡大');
+    var im=document.createElement('img');im.src=url(s[0],'600x338');im.alt=s[1];im.loading='lazy';im.width=600;im.height=338;
+    b.appendChild(im);g.appendChild(b);
+  });
+  var lb=document.getElementById('lightbox'),lbImg=document.getElementById('lbImg'),cur=0,last=null;
+  function show(i){cur=(i+shots.length)%shots.length;lbImg.src=url(shots[cur][0],'1920x1080');lbImg.alt=shots[cur][1];}
+  function open(i,from){last=from;show(i);lb.hidden=false;document.getElementById('lbClose').focus();}
+  function close(){lb.hidden=true;lbImg.removeAttribute('src');if(last)last.focus();}
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-shot]');if(b){open(+b.dataset.shot,b);}});
+  document.getElementById('lbClose').onclick=close;
+  document.getElementById('lbPrev').onclick=function(){show(cur-1);};
+  document.getElementById('lbNext').onclick=function(){show(cur+1);};
+  lb.addEventListener('click',function(e){if(e.target===lb)close();});
+  document.addEventListener('keydown',function(e){if(lb.hidden)return;if(e.key==='Escape')close();if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1);});
+
+  var v=document.getElementById('trailerVideo'),btn=document.getElementById('playBtn');
+  btn.addEventListener('click',function(){btn.hidden=true;var p=v.play();if(p&&p.catch)p.catch(function(){});});
+  v.addEventListener('play',function(){btn.hidden=true;});
+})();
+</script>
+</body>
+</html>
